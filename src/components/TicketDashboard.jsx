@@ -11,6 +11,8 @@ import {
 import axios from "axios";
 import toast from "react-hot-toast";
 
+const API_URL = import.meta.env.VITE_API_URL; 
+
 const TicketDashboard = () => {
   const [tickets, setTickets] = useState([]);
   const [engineers, setEngineers] = useState([]);
@@ -19,7 +21,7 @@ const TicketDashboard = () => {
     const fetchEngineers = async () => {
       try {
         const res = await axios.get(
-          "/api/v1/admin/dashboard/all-engineers"
+          `${API_URL}/api/v1/admin/dashboard/all-engineers`
         );
         setEngineers(res.data.engineers);
       } catch (error) {
@@ -37,7 +39,7 @@ const TicketDashboard = () => {
     async function fetchTickets() {
       try {
         const res = await axios.get(
-          "/api/v1/admin/dashboard/all-tickets"
+          `${API_URL}/api/v1/admin/dashboard/all-engineers`
         );
         setTickets(res.data.tickets);
       } catch (error) {

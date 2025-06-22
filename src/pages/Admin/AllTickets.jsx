@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import axios from "axios";
-
+const API_URL = import.meta.env.VITE_API_URL; 
 const AllTickets = () => {
   const [tickets, setTickets] = React.useState([]);
 
@@ -27,7 +27,7 @@ const AllTickets = () => {
     try {
       async function fetchTickets() {
         const res = await axios.get(
-          "/api/v1/admin/dashboard/all-tickets"
+          `${API_URL}/api/v1/admin/dashboard/all-tickets`
         );
         setTickets(res.data.tickets);
       }

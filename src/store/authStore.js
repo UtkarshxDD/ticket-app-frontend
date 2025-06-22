@@ -1,110 +1,106 @@
 import { create } from "zustand";
 import axios from "axios";
 import toast from "react-hot-toast";
+
+const API_URL = import.meta.env.VITE_API_URL;
+
 export const useAuthStore = create((set) => ({
   user: null,
   isSigningUp: false,
   isLoggingIn: false,
-  isLoggingOut:false,
+  isLoggingOut: false,
   isCheckingAuth: true,
+
   userSignup: async (credentials) => {
     set({ isSigningUp: true });
     try {
       const res = await axios.post(
-        "/api/v1/auth/user/signup",
+        `${API_URL}/api/v1/auth/user/signup`,
         credentials,
-        { withCredentials: true } // if using cookies for auth
+        { withCredentials: true }
       );
       set({ user: res.data.user, isSigningUp: false });
       toast.success("Account created successfully");
     } catch (error) {
       console.error("Signup Error:", error);
-      toast.error(
-        error.response?.data?.message || "Signup failed"
-      );
+      toast.error(error.response?.data?.message || "Signup failed");
       set({ isSigningUp: false, user: null });
     }
   },
+
   userLogin: async (credentials) => {
     set({ isLoggingIn: true });
     try {
       const res = await axios.post(
-        "/api/v1/auth/user/login",
-        credentials
+        `${API_URL}/api/v1/auth/user/login`,
+        credentials,
+        { withCredentials: true }
       );
       set({ user: res.data.user, isLoggingIn: false });
       toast.success("Logged in successfully");
-      // Redirect to the dashboard or home page
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Login failed"
-      );
+      toast.error(error.response?.data?.message || "Login failed");
       set({ isLoggingIn: false, user: null });
-      // Handle login error
     }
   },
+
   userLogout: async () => {
     set({ isLoggingOut: true });
     try {
-      await axios.post("/api/v1/auth/user/logout");
+      await axios.post(`${API_URL}/api/v1/auth/user/logout`, null, {
+        withCredentials: true,
+      });
       set({ user: null, isLoggingOut: false });
       toast.success("Logged out successfully");
-      // Redirect to the login page
     } catch (error) {
-      toast.error(
-        error.res.data.message || "Logout failed"
-      );
+      toast.error(error.response?.data?.message || "Logout failed");
       set({ user: null, isLoggingOut: false });
-      // Handle logout error
     }
   },
-  adminSignup:async (credentials) => {
+
+  adminSignup: async (credentials) => {
     set({ isSigningUp: true });
     try {
       const res = await axios.post(
-        "/api/v1/auth/admin/signup",
-        credentials
+        `${API_URL}/api/v1/auth/admin/signup`,
+        credentials,
+        { withCredentials: true }
       );
       set({ user: res.data.user, isSigningUp: false });
-      toast.success("Account created successfully");
+      toast.success("Admin account created successfully");
     } catch (error) {
-      console.error("Signup Error:", error);
-      toast.error(
-        error.response?.data?.message || "Signup failed"
-      );
+      console.error("Admin Signup Error:", error);
+      toast.error(error.response?.data?.message || "Signup failed");
       set({ isSigningUp: false, user: null });
     }
   },
-  adminLogin:async (credentials) => {
+
+  adminLogin: async (credentials) => {
     set({ isLoggingIn: true });
     try {
       const res = await axios.post(
-        "/api/v1/auth/admin/login",
-        credentials, // if using cookies for auth
+        `${API_URL}/api/v1/auth/admin/login`,
+        credentials,
+        { withCredentials: true }
       );
       set({ user: res.data.user, isLoggingIn: false });
-      toast.success("Logged in successfully");
+      toast.success("Admin logged in successfully");
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Login failed"
-      );
+      toast.error(error.response?.data?.message || "Login failed");
       set({ isLoggingIn: false, user: null });
     }
   },
+
   authCheck: async () => {
     set({ isCheckingAuth: true });
     try {
-      const res = await axios.get(
-        "/api/v1/auth/user/authCheck"
-      );
+      const res = await axios.get(`${API_URL}/api/v1/auth/user/authCheck`, {
+        withCredentials: true,
+      });
       set({ user: res.data.user, isCheckingAuth: false });
     } catch (error) {
-      console.log(error)
+      console.error("Auth Check Error:", error);
       set({ user: null, isCheckingAuth: false });
     }
   },
 }));
-
-
-
-

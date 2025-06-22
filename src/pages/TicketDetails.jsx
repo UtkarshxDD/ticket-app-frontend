@@ -22,6 +22,7 @@ import {
 import { useTicketStore } from "../store/ticketStore";
 import { useAuthStore } from "../store/authStore";
 import { toast } from "react-hot-toast";
+const API_URL = import.meta.env.VITE_API_URL; 
 const TicketDetails = () => {
   const { user } = useAuthStore();
   const {
@@ -51,7 +52,7 @@ const TicketDetails = () => {
     const fetchEngineers = async () => {
       try {
         const res = await axios.get(
-          "/api/v1/admin/dashboard/all-engineers"
+          `${API_URL}/api/v1/admin/dashboard/all-engineers`
         );
         setEngineers(res.data.engineers);
       } catch (error) {
@@ -70,7 +71,7 @@ const TicketDetails = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `/api/v1/dashboard/tickets/${id}`
+          `${API_URL}/api/v1/dashboard/tickets/${id}`
         ); // backend endpoint
         setTicket(response.data.ticket);
         setComments(response.data.ticket.comments || []);
@@ -89,7 +90,7 @@ const TicketDetails = () => {
     const fetchEngineer = async () => {
       try {
         const response = await axios.get(
-          `/api/v1/dashboard/user/${ticket?.assignedTo}`
+          `${API_URL}/api/v1/dashboard/user/${ticket?.assignedTo}`
         ); // backend endpoint
         setEngineer(response.data.user.name);
       } catch (error) {

@@ -4,7 +4,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
 // import StatusBadge from "../components/StatusBadge"; // Uncomment if you have it
-
+const API_URL = import.meta.env.VITE_API_URL; 
 const Users = () => {
   const [users, setUsers] = useState([]);
   const [role, setRole] = useState("");
@@ -14,7 +14,7 @@ const Users = () => {
     setIsLoading(true);
     try {
       const response = await axios.delete(
-        `/api/v1/admin/dashboard/delete-user/${userId}`
+        `${API_URL}/api/v1/admin/dashboard/delete-user/${userId}`
       );
       setUsers((prevUsers) =>
         prevUsers.filter((user) => user._id !== userId)
@@ -33,12 +33,12 @@ const Users = () => {
       try {
         if (role === "user") {
           const response = await axios.get(
-            `/api/v1/admin/dashboard/all-users`
+            `${API_URL}/api/v1/admin/dashboard/all-users`
           );
           setUsers(response.data.users);
         } else if (role === "engineer") {
           const response = await axios.get(
-            `/api/v1/admin/dashboard/all-engineers`
+            `${API_URL}/api/v1/admin/dashboard/all-engineers`
           );
           setUsers(response.data.engineers);
         }
